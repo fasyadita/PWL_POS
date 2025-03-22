@@ -165,7 +165,9 @@ class UserController extends Controller
 
         $activeMenu = 'user'; //set menu yang aktif
 
-        return view('user.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu]);
+        $level = LevelModel::all(); //set menu yang sedang aktif
+
+        return view('user.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'level' => $level, 'activeMenu' => $activeMenu]);
     }
 
     public function tambah()
@@ -216,6 +218,12 @@ class UserController extends Controller
     {
         $users = UserModel::select('user_id', 'username', 'nama', 'level_id')
             ->with('level');
+
+        // filter data user brdasarkan level_id
+        if ($request->level_id){
+            $users->where('level_id', $request->level_id);
+        }
+
         return DataTables::of($users)
             // menambahkan kolom index / no urut (default nama kolom: DT_RowIndex)
             ->addIndexColumn()
