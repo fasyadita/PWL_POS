@@ -91,7 +91,7 @@
             ]
         });
 
-        $('#ksupplier_id').on('change', function(){
+        $('#supplier_id').on('change', function(){
             dataSupplier.ajax.reload();
         });
 
