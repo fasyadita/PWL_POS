@@ -73,7 +73,43 @@
                     <p>Transaksi Penjualan</p>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" id="logout-link">
+                    <i class="nav-icon fas fa-sign-out-alt"></i>
+                    <p>Logout</p>
+                </a>
+                <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+            </li>
 
         </ul>
     </nav>
 </div>
+
+<script>
+    document.getElementById('logout-link').addEventListener('click', function(event) {
+        event.preventDefault();
+
+        Swal.fire({
+        icon: 'warning',
+        title: 'Apakah Anda yakin?',
+        text: 'Anda akan keluar dari sistem!',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Logout!',
+        cancelButtonText: 'Batal',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire(
+            'Logout berhasil!',
+            'Anda telah keluar dari sistem.',
+            'success'
+        )
+            document.getElementById('logout-form').submit();
+        }
+      });
+    });
+    
+</script>
