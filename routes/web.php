@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LevelController;
-use App\Http\Controllers\KategoriController;
-use App\http\Controllers\UserController;
-use App\Http\Controllers\WelcomeController;
-use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\BarangController;
 use App\Models\LevelModel;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\http\Controllers\UserController;
+use App\Http\Controllers\LevelController;
+use App\Http\Controllers\BarangController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\SupplierController;
 
 Route::pattern('id','[0-9]+'); //artinya jika ada parameter id harus berupa angka
 
@@ -35,7 +36,9 @@ Route::middleware(['auth'])->group(function(){ // semua route di dalam group ini
     Route::get('/user/hapus/{id}', [UserController::class, 'hapus']);
     
     Route::get('/', [WelcomeController::class, 'index']);
-    
+
+    Route::get('/profile',[ProfileController::class, 'index']);
+        
     Route::group(['prefix' => 'user'], function(){
         Route::get('/',[UserController::class, 'index']);
         Route::post('/list',[UserController::class, 'list']);
@@ -51,6 +54,7 @@ Route::middleware(['auth'])->group(function(){ // semua route di dalam group ini
         Route::get('/{id}/delete_ajax',[UserController::class, 'confirm_ajax']);
         Route::delete('/{id}/delete_ajax',[UserController::class, 'delete_ajax']);
         Route::delete('/{id}',[UserController::class, 'destroy']);
+        Route::get('/export_pdf',[UserController::class, 'export_pdf']); // export pdf
         
     });
     
@@ -70,6 +74,7 @@ Route::middleware(['auth'])->group(function(){ // semua route di dalam group ini
             Route::get('/{id}/delete_ajax',[LevelController::class, 'confirm_ajax']);
             Route::delete('/{id}/delete_ajax',[LevelController::class, 'delete_ajax']);
             Route::delete('/{id}', [LevelController::class, 'destroy']);
+            Route::get('/export_pdf',[LevelController::class, 'export_pdf']); // export pdf
         });
     });
     
@@ -91,6 +96,7 @@ Route::middleware(['auth'])->group(function(){ // semua route di dalam group ini
             Route::delete('/{id}/delete_ajax', [KategoriController::class, 'delete_ajax']);
             Route::put('/{id}', [KategoriController::class, 'update']);
             Route::delete('/{id}', [KategoriController::class, 'destroy']);
+            Route::get('/export_pdf',[KategoriController::class, 'export_pdf']); // export pdf
         });
     });
     
@@ -110,6 +116,7 @@ Route::middleware(['auth'])->group(function(){ // semua route di dalam group ini
             Route::get('/{id}/delete_ajax', [SupplierController::class, 'confirm_ajax']);
             Route::delete('/{id}/delete_ajax', [SupplierController::class, 'delete_ajax']);
             Route::delete('/{id}', [SupplierController::class, 'destroy']);
+            Route::get('/export_pdf',[SupplierController::class, 'export_pdf']); // export pdf
         });
     });
     

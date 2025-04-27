@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Validator;
  use App\Models\SupplierModel;
  use Illuminate\Http\Request;
@@ -267,5 +268,21 @@ $btn .= '<button onclick="modalAction(\'' . url('/supplier/' . $supplier->suppli
             }
         }
         return redirect('/');
+    }
+
+    public function export_pdf(){
+
+        $supplier = SupplierModel::select('supplier_id','supplier_kode','supplier_nama')
+        ->orderBy('supplier_id')
+        ->get();
+
+        // user barryvdh\DomPdf\facade\Pdf
+        $pdf = Pdf::loadView('supplier.export_pdf',['supplier' => $supplier]);
+        $pdf-> setPaper('a4','portrait'); //set ukuran kertas orientasi
+        $pdf-> setOption("IsRemoteEnabled", true); //set true jika ada gambar dr url
+        $pdf->render();
+
+        return $pdf->stream('Data Supplier' .date('Y-m-d H:i:s').'.pdf');
+    
     }
  }

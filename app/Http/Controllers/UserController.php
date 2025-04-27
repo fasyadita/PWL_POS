@@ -6,6 +6,7 @@ use Monolog\Level;
 use App\Models\UserModel;
 use App\Models\LevelModel;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
@@ -494,5 +495,22 @@ class UserController extends Controller
             }
             return redirect('/');
         }
+    }
+
+    public function export_pdf(){
+
+        $user = UserModel::select('user_id','level_id','username','nama','password')
+        ->with('level')
+        ->orderBy('level_id')
+        ->get();
+
+        // user barryvdh\DomPdf\facade\Pdf
+        $pdf = Pdf::loadView('user.export_pdf',['user' => $user]);
+        $pdf-> setPaper('a4','portrait'); //set ukuran kertas orientasi
+        $pdf-> setOption("IsRemoteEnabled", true); //set true jika ada gambar dr url
+        $pdf->render();
+
+        return $pdf->stream('Data level' .date('Y-m-d H:i:s').'.pdf');
+    
     }
 }
