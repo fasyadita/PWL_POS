@@ -37,7 +37,12 @@ Route::middleware(['auth'])->group(function(){ // semua route di dalam group ini
     
     Route::get('/', [WelcomeController::class, 'index']);
 
-    Route::get('/profile',[ProfileController::class, 'index']);
+    Route::middleware(['auth', 'authorize:ADMN,MNG,STF'])->group(function () {
+        Route::group(['prefix' => 'profile'], function () {
+            Route::get('/', [ProfileController::class, 'index']);
+            Route::post('/avatar', [ProfileController::class, 'updatepp'])->name('profile.avatar');
+        });
+    });
         
     Route::group(['prefix' => 'user'], function(){
         Route::get('/',[UserController::class, 'index']);
