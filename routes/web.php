@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\LoginController;
 use App\Models\LevelModel;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -10,15 +11,17 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\Api\RegisterController;
 
 Route::pattern('id','[0-9]+'); //artinya jika ada parameter id harus berupa angka
 
 Route::get('login',[AuthController::class,'login'])->name('login');
 Route::post('login',[AuthController::class,'postlogin']);
 Route::get('/register', [AuthController::class, 'register'])->name('register');
- Route::post('/register', [AuthController::class, 'postRegister']);
+Route::post('/register', [AuthController::class, 'postRegister']);
 Route::get('logout',[AuthController::class,'logout'])->name('logout');
 Route::post('logout',[AuthController::class,'logout']);
+
 
 Route::middleware(['auth'])->group(function(){ // semua route di dalam group ini haarus login dulu
     
