@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Foundation\Auth\User as Authenticatable; //implementasi class authenticatable
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable; //implementasi class authenticatable
 
 class UserModel extends Authenticatable implements JWTSubject
 {
@@ -24,7 +25,7 @@ class UserModel extends Authenticatable implements JWTSubject
     protected $primaryKey = 'user_id'; // mendefinisikan primary key dari tabel yang digunakan
     //@var array;
     
-    protected $fillable = ['level_id','username','nama','password','foto_profil'];
+    protected $fillable = ['level_id','username','nama','password','foto_profil','image'];
     // protected $fillable = ['level_id','username','nama'];
     
     protected $hidden = ['password']; //jangan ditampilkan saat select
@@ -56,6 +57,12 @@ class UserModel extends Authenticatable implements JWTSubject
             return asset($this->avatar); // Langsung dari public
         }
         return asset('images/default-avatar.png');
+    }
+
+    protected function image():Attribute{
+        return Attribute::make(
+            get: fn ($image) => url('/storage/posts/' . $image),
+        );
     }
 
 
