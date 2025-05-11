@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\BarangModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class BarangController extends Controller
 {
@@ -14,12 +15,14 @@ class BarangController extends Controller
 
     public function store(Request $request){
         
+        $image = $request->file('image_barang');
         $barang = BarangModel::create([
             'kategori_id' => $request->kategori_id,
             'barang_kode' => $request->barang_kode,
             'barang_nama' => $request->barang_nama,
             'harga_beli' => $request->harga_beli,
             'harga_jual' => $request->harga_beli,
+            'image_barang' => $image ->hashName(),
         ]);
 
         return response()->json($barang,201);
